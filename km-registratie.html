@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KM Registratie — Theater Tour</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: #1a1a24;
+            --accent: #ff6b35;
+            --accent-glow: rgba(255, 107, 53, 0.3);
+            --text-primary: #f5f5f7;
+            --text-secondary: #8a8a9a;
+            --text-muted: #5a5a6a;
+            --border: #2a2a3a;
+            --success: #4ade80;
+            --warning: #fbbf24;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .logo h1 {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--accent);
+        }
+
+        .logo span {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .stats {
+            display: flex;
+            gap: 2rem;
+            text-align: right;
+        }
+
+        .stat {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-value {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            gap: 2rem;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-secondary);
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        label {
+            display: block;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.9375rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238a8a9a' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            padding-right: 2.5rem;
+        }
+
+        .swap-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            padding: 0.75rem;
+            background: transparent;
+            border: 1px dashed var(--border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-family: inherit;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin: 0.75rem 0;
+        }
+
+        .swap-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: rgba(255, 107, 53, 0.05);
+        }
+
+        .swap-btn.active {
+            background: rgba(255, 107, 53, 0.1);
+            border-style: solid;
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .swap-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.875rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.9375rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            background: #ff8555;
+            box-shadow: 0 4px 20px var(--accent-glow);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--text-secondary);
+            color: var(--text-primary);
+        }
+
+        .btn-sm {
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+        }
+
+        .btn-icon {
+            padding: 0.5rem;
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+        }
+
+        .btn-icon:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .distance-preview {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .distance-value {
+            font-family: 'Space Mono', monospace;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .distance-unit {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .distance-info {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-align: center;
+            margin-top: 0.5rem;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 0.25rem;
+            margin-bottom: 1rem;
+            background: var(--bg-secondary);
+            padding: 0.25rem;
+            border-radius: 8px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 0.5rem;
+            background: transparent;
+            border: none;
+            border-radius: 6px;
+            color: var(--text-muted);
+            font-family: inherit;
+            font-size: 0.8125rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tab.active {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        .tab:hover:not(.active) {
+            color: var(--text-secondary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Lists */
+        .item-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+
+        .item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.625rem 0.75rem;
+            background: var(--bg-secondary);
+            border-radius: 6px;
+            font-size: 0.8125rem;
+        }
+
+        .item-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.125rem;
+        }
+
+        .item-name {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .item-detail {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .add-form {
+            display: none;
+            flex-direction: column;
+            gap: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--border);
+            margin-top: 0.75rem;
+        }
+
+        .add-form.active {
+            display: flex;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .form-row input {
+            flex: 1;
+        }
+
+        /* Main Table */
+        .table-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .table-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: var(--bg-secondary);
+        }
+
+        th {
+            padding: 0.875rem 1rem;
+            text-align: left;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 1rem;
+            font-size: 0.9375rem;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .date-cell {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+        }
+
+        .person-cell {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .person-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .route-cell {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .route-arrow {
+            color: var(--text-muted);
+        }
+
+        .km-cell {
+            font-family: 'Space Mono', monospace;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .return-badge {
+            font-size: 0.625rem;
+            padding: 0.125rem 0.375rem;
+            background: rgba(255, 107, 53, 0.2);
+            color: var(--accent);
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .actions-cell {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .empty-state {
+            padding: 4rem 2rem;
+            text-align: center;
+            color: var(--text-muted);
+        }
+
+        .empty-state svg {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .empty-state p {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+        }
+
+        .modal-actions .btn {
+            flex: 1;
+        }
+
+        .export-preview {
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+            color: var(--text-secondary);
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--bg-card);
+            border: 1px solid var(--success);
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            color: var(--success);
+            font-size: 0.875rem;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 200;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                gap: 1.5rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 1rem;
+            }
+
+            header {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .stats {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            th, td {
+                padding: 0.75rem 0.5rem;
+                font-size: 0.8125rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <h1>KM//REG</h1>
+                <span>Theater Tour Administratie</span>
+            </div>
+            <div class="stats">
+                <div class="stat">
+                    <span class="stat-value" id="totalKm">0</span>
+                    <span class="stat-label">Totaal KM</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value" id="totalTrips">0</span>
+                    <span class="stat-label">Ritten</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-grid">
+            <aside class="sidebar">
+                <!-- New Trip Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">Nieuwe Rit</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tripDate">Datum</label>
+                        <input type="date" id="tripDate">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="personSelect">Persoon</label>
+                        <select id="personSelect">
+                            <option value="">Selecteer persoon...</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="homeSelect">Vertrek (Home)</label>
+                        <select id="homeSelect">
+                            <option value="">Selecteer thuisadres...</option>
+                        </select>
+                    </div>
+
+                    <button class="swap-btn" id="swapBtn" type="button">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 16V4M7 4L3 8M7 4L11 8M17 8V20M17 20L21 16M17 20L13 16"/>
+                        </svg>
+                        <span id="swapText">Enkele reis</span>
+                    </button>
+
+                    <div class="form-group">
+                        <label for="destinationSelect">Bestemming (Theater/Stad)</label>
+                        <select id="destinationSelect">
+                            <option value="">Selecteer bestemming...</option>
+                        </select>
+                    </div>
+
+                    <div class="distance-preview">
+                        <span class="distance-value" id="previewKm">—</span>
+                        <span class="distance-unit">km</span>
+                    </div>
+                    <div class="distance-info" id="distanceInfo"></div>
+
+                    <label class="checkbox-label" style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; cursor: pointer;">
+                        <input type="checkbox" id="multiplierCheck" style="width: auto; accent-color: var(--accent);">
+                        <span style="font-size: 0.875rem;">+10% toeslag (omrijden/parkeren)</span>
+                    </label>
+
+                    <button class="btn btn-primary" id="addTripBtn" type="button">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 5V19M5 12H19"/>
+                        </svg>
+                        Toevoegen aan lijst
+                    </button>
+                </div>
+
+                <!-- Database Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">Database</span>
+                    </div>
+
+                    <div class="tabs">
+                        <button class="tab active" data-tab="persons">Personen</button>
+                        <button class="tab" data-tab="destinations">Bestemmingen</button>
+                    </div>
+
+                    <!-- Persons Tab -->
+                    <div class="tab-content active" id="personsTab">
+                        <div class="item-list" id="personsList"></div>
+                        <button class="btn btn-secondary btn-sm" id="addPersonBtn" style="width: 100%; margin-top: 0.75rem;">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 5V19M5 12H19"/>
+                            </svg>
+                            Persoon toevoegen
+                        </button>
+                        <div class="add-form" id="addPersonForm">
+                            <input type="text" id="newPersonName" placeholder="Naam">
+                            <input type="text" id="newPersonCity" placeholder="Woonplaats">
+                            <div class="form-row">
+                                <button class="btn btn-secondary btn-sm" id="cancelPersonBtn" type="button">Annuleren</button>
+                                <button class="btn btn-primary btn-sm" id="savePersonBtn" type="button">Opslaan</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Destinations Tab -->
+                    <div class="tab-content" id="destinationsTab">
+                        <div class="item-list" id="destinationsList"></div>
+                        <button class="btn btn-secondary btn-sm" id="addDestBtn" style="width: 100%; margin-top: 0.75rem;">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 5V19M5 12H19"/>
+                            </svg>
+                            Bestemming toevoegen
+                        </button>
+                        <div class="add-form" id="addDestForm">
+                            <input type="text" id="newDestName" placeholder="Theater/Locatie naam">
+                            <input type="text" id="newDestCity" placeholder="Stad">
+                            <div class="form-row">
+                                <button class="btn btn-secondary btn-sm" id="cancelDestBtn" type="button">Annuleren</button>
+                                <button class="btn btn-primary btn-sm" id="saveDestBtn" type="button">Opslaan</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Table -->
+            <div class="table-container">
+                <div class="table-header">
+                    <span class="card-title">Rittenlijst</span>
+                    <div class="table-actions">
+                        <button class="btn btn-secondary btn-sm" id="exportBtn" type="button">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15V19C21 20.1 20.1 21 19 21H5C3.9 21 3 20.1 3 19V15M7 10L12 15M12 15L17 10M12 15V3"/>
+                            </svg>
+                            Export
+                        </button>
+                        <button class="btn btn-secondary btn-sm" id="clearAllBtn" type="button">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 6H5H21M8 6V4C8 3.4 8.4 3 9 3H15C15.6 3 16 3.4 16 4V6M19 6V20C19 20.6 18.6 21 18 21H6C5.4 21 5 20.6 5 20V6"/>
+                            </svg>
+                            Wissen
+                        </button>
+                    </div>
+                </div>
+
+                <table id="tripsTable">
+                    <thead>
+                        <tr>
+                            <th>Datum</th>
+                            <th>Persoon</th>
+                            <th>Route</th>
+                            <th>KM</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tripsTableBody">
+                    </tbody>
+                </table>
+
+                <div class="empty-state" id="emptyState">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M9 17L15 17M12 3V4M18.364 5.636L17.657 6.343M21 12H20M4 12H3M6.343 6.343L5.636 5.636M12 20V21M17.657 17.657L18.364 18.364M6.343 17.657L5.636 18.364"/>
+                        <circle cx="12" cy="12" r="4"/>
+                    </svg>
+                    <p>Nog geen ritten geregistreerd</p>
+                    <span style="font-size: 0.875rem;">Voeg een rit toe via het formulier links</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Export Modal -->
+    <div class="modal-overlay" id="exportModal">
+        <div class="modal">
+            <h2>Export Rittenlijst</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 1rem; font-size: 0.875rem;">
+                Kopieer onderstaande tekst naar je factuur
+            </p>
+            <div class="export-preview" id="exportPreview"></div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" id="closeExportBtn" type="button">Sluiten</button>
+                <button class="btn btn-primary" id="copyExportBtn" type="button">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2"/>
+                        <path d="M5 15H4C2.9 15 2 14.1 2 13V4C2 2.9 2.9 2 4 2H13C14.1 2 15 2.9 15 4V5"/>
+                    </svg>
+                    Kopiëren
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast">Gekopieerd naar klembord!</div>
+
+    <script>
+        // ============================================
+        // DATABASE: Nederlandse steden met coördinaten
+        // ============================================
+        const CITIES_DB = {
+            // Grote steden
+            'amsterdam': { lat: 52.3676, lon: 4.9041, name: 'Amsterdam' },
+            'rotterdam': { lat: 51.9225, lon: 4.4792, name: 'Rotterdam' },
+            'den haag': { lat: 52.0705, lon: 4.3007, name: 'Den Haag' },
+            'utrecht': { lat: 52.0907, lon: 5.1214, name: 'Utrecht' },
+            'eindhoven': { lat: 51.4416, lon: 5.4697, name: 'Eindhoven' },
+            'tilburg': { lat: 51.5555, lon: 5.0913, name: 'Tilburg' },
+            'groningen': { lat: 53.2194, lon: 6.5665, name: 'Groningen' },
+            'almere': { lat: 52.3508, lon: 5.2647, name: 'Almere' },
+            'breda': { lat: 51.5719, lon: 4.7683, name: 'Breda' },
+            'nijmegen': { lat: 51.8126, lon: 5.8372, name: 'Nijmegen' },
+            'arnhem': { lat: 51.9851, lon: 5.8987, name: 'Arnhem' },
+            'haarlem': { lat: 52.3874, lon: 4.6462, name: 'Haarlem' },
+            'enschede': { lat: 52.2215, lon: 6.8937, name: 'Enschede' },
+            'haarlemmermeer': { lat: 52.3025, lon: 4.6914, name: 'Haarlemmermeer' },
+            'amersfoort': { lat: 52.1561, lon: 5.3878, name: 'Amersfoort' },
+            'zaanstad': { lat: 52.4399, lon: 4.8260, name: 'Zaanstad' },
+            'zwolle': { lat: 52.5168, lon: 6.0830, name: 'Zwolle' },
+            'den bosch': { lat: 51.6998, lon: 5.3049, name: "'s-Hertogenbosch" },
+            's-hertogenbosch': { lat: 51.6998, lon: 5.3049, name: "'s-Hertogenbosch" },
+            'leiden': { lat: 52.1601, lon: 4.4970, name: 'Leiden' },
+            'maastricht': { lat: 50.8514, lon: 5.6910, name: 'Maastricht' },
+            'dordrecht': { lat: 51.8133, lon: 4.6901, name: 'Dordrecht' },
+            'ede': { lat: 52.0484, lon: 5.6650, name: 'Ede' },
+            'apeldoorn': { lat: 52.2112, lon: 5.9699, name: 'Apeldoorn' },
+            'delft': { lat: 52.0116, lon: 4.3571, name: 'Delft' },
+            'deventer': { lat: 52.2549, lon: 6.1630, name: 'Deventer' },
+            'alkmaar': { lat: 52.6324, lon: 4.7534, name: 'Alkmaar' },
+            'hilversum': { lat: 52.2292, lon: 5.1669, name: 'Hilversum' },
+            'heerlen': { lat: 50.8882, lon: 5.9793, name: 'Heerlen' },
+            'venlo': { lat: 51.3704, lon: 6.1724, name: 'Venlo' },
+            'leeuwarden': { lat: 53.2012, lon: 5.7999, name: 'Leeuwarden' },
+            'zoetermeer': { lat: 52.0575, lon: 4.4931, name: 'Zoetermeer' },
+            'gouda': { lat: 52.0115, lon: 4.7104, name: 'Gouda' },
+            'roosendaal': { lat: 51.5308, lon: 4.4649, name: 'Roosendaal' },
+            'oss': { lat: 51.7649, lon: 5.5180, name: 'Oss' },
+            'helmond': { lat: 51.4758, lon: 5.6553, name: 'Helmond' },
+            'vlaardingen': { lat: 51.9125, lon: 4.3419, name: 'Vlaardingen' },
+            'bergen op zoom': { lat: 51.4949, lon: 4.2911, name: 'Bergen op Zoom' },
+            'schiedam': { lat: 51.9244, lon: 4.3989, name: 'Schiedam' },
+            'capelle aan den ijssel': { lat: 51.9291, lon: 4.5780, name: 'Capelle aan den IJssel' },
+            'spijkenisse': { lat: 51.8452, lon: 4.3290, name: 'Spijkenisse' },
+            'almelo': { lat: 52.3567, lon: 6.6683, name: 'Almelo' },
+            'hoorn': { lat: 52.6422, lon: 5.0597, name: 'Hoorn' },
+            'purmerend': { lat: 52.5050, lon: 4.9598, name: 'Purmerend' },
+            'weert': { lat: 51.2517, lon: 5.7069, name: 'Weert' },
+            'roermond': { lat: 51.1945, lon: 5.9876, name: 'Roermond' },
+            'middelburg': { lat: 51.4988, lon: 3.6136, name: 'Middelburg' },
+            'tiel': { lat: 51.8867, lon: 5.4281, name: 'Tiel' },
+            'harderwijk': { lat: 52.3418, lon: 5.6200, name: 'Harderwijk' },
+            'veenendaal': { lat: 52.0275, lon: 5.5586, name: 'Veenendaal' },
+            'zeist': { lat: 52.0907, lon: 5.2333, name: 'Zeist' },
+            'woerden': { lat: 52.0858, lon: 4.8833, name: 'Woerden' },
+            'nieuwegein': { lat: 52.0286, lon: 5.0808, name: 'Nieuwegein' },
+            'baarn': { lat: 52.2119, lon: 5.2897, name: 'Baarn' },
+            'soest': { lat: 52.1750, lon: 5.2917, name: 'Soest' },
+            'bussum': { lat: 52.2750, lon: 5.1667, name: 'Bussum' },
+            'naarden': { lat: 52.2956, lon: 5.1628, name: 'Naarden' },
+            'weesp': { lat: 52.3078, lon: 5.0425, name: 'Weesp' },
+            'muiden': { lat: 52.3297, lon: 5.0686, name: 'Muiden' },
+            'ijmuiden': { lat: 52.4589, lon: 4.6192, name: 'IJmuiden' },
+            'beverwijk': { lat: 52.4833, lon: 4.6569, name: 'Beverwijk' },
+            'heemskerk': { lat: 52.5086, lon: 4.6744, name: 'Heemskerk' },
+            'castricum': { lat: 52.5500, lon: 4.6667, name: 'Castricum' },
+            'uitgeest': { lat: 52.5286, lon: 4.7086, name: 'Uitgeest' },
+            'heiloo': { lat: 52.5994, lon: 4.6969, name: 'Heiloo' },
+            'bergen': { lat: 52.6667, lon: 4.7000, name: 'Bergen' },
+            'schagen': { lat: 52.7875, lon: 4.7983, name: 'Schagen' },
+            'den helder': { lat: 52.9533, lon: 4.7600, name: 'Den Helder' },
+            'texel': { lat: 53.0583, lon: 4.7983, name: 'Texel' },
+            // Belgische steden (voor grenswerk)
+            'antwerpen': { lat: 51.2194, lon: 4.4025, name: 'Antwerpen' },
+            'gent': { lat: 51.0543, lon: 3.7174, name: 'Gent' },
+            'brussel': { lat: 50.8503, lon: 4.3517, name: 'Brussel' },
+            // Duitse steden (voor grenswerk)
+            'düsseldorf': { lat: 51.2277, lon: 6.7735, name: 'Düsseldorf' },
+            'essen': { lat: 51.4556, lon: 7.0116, name: 'Essen' },
+            'köln': { lat: 50.9375, lon: 6.9603, name: 'Köln' },
+            'keulen': { lat: 50.9375, lon: 6.9603, name: 'Keulen' },
+        };
+
+        // ============================================
+        // STATE
+        // ============================================
+        let persons = JSON.parse(localStorage.getItem('kmreg_persons')) || [
+            { id: 1, name: 'Voorbeeld Persoon', city: 'Amsterdam' }
+        ];
+
+        let destinations = JSON.parse(localStorage.getItem('kmreg_destinations')) || [
+            { id: 1, name: 'Stadsschouwburg Amsterdam', city: 'Amsterdam' },
+            { id: 2, name: 'Nieuwe Luxor Theater', city: 'Rotterdam' },
+            { id: 3, name: 'TivoliVredenburg', city: 'Utrecht' },
+            { id: 4, name: 'Parktheater', city: 'Eindhoven' },
+            { id: 5, name: 'Stadsschouwburg', city: 'Groningen' },
+            { id: 6, name: 'DeLaMar Theater', city: 'Amsterdam' },
+            { id: 7, name: 'AFAS Live', city: 'Amsterdam' },
+            { id: 8, name: 'Koninklijk Theater Carré', city: 'Amsterdam' },
+            { id: 9, name: 'Chassé Theater', city: 'Breda' },
+            { id: 10, name: 'Schouwburg', city: 'Arnhem' },
+            { id: 11, name: 'Theater aan het Spui', city: 'Den Haag' },
+            { id: 12, name: 'Wilminktheater', city: 'Enschede' },
+            { id: 13, name: 'De Harmonie', city: 'Leeuwarden' },
+            { id: 14, name: 'Theater Kikker', city: 'Utrecht' },
+            { id: 15, name: 'Zaantheater', city: 'Zaanstad' },
+            { id: 16, name: 'Deventer Schouwburg', city: 'Deventer' },
+        ];
+
+        let trips = JSON.parse(localStorage.getItem('kmreg_trips')) || [];
+        let isReturnTrip = false;
+
+        // ============================================
+        // DOM ELEMENTS
+        // ============================================
+        const $ = id => document.getElementById(id);
+
+        const tripDateInput = $('tripDate');
+        const personSelect = $('personSelect');
+        const homeSelect = $('homeSelect');
+        const destinationSelect = $('destinationSelect');
+        const swapBtn = $('swapBtn');
+        const swapText = $('swapText');
+        const addTripBtn = $('addTripBtn');
+        const previewKm = $('previewKm');
+        const distanceInfo = $('distanceInfo');
+        const tripsTableBody = $('tripsTableBody');
+        const emptyState = $('emptyState');
+        const totalKmEl = $('totalKm');
+        const totalTripsEl = $('totalTrips');
+        const personsList = $('personsList');
+        const destinationsList = $('destinationsList');
+        const exportModal = $('exportModal');
+        const exportPreview = $('exportPreview');
+        const toast = $('toast');
+
+        // ============================================
+        // DISTANCE CALCULATION (Haversine formula)
+        // ============================================
+        function haversineDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371; // Earth's radius in km
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                      Math.sin(dLon/2) * Math.sin(dLon/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            return R * c;
+        }
+
+        function getCoords(cityName) {
+            if (!cityName) return null;
+            const normalized = cityName.toLowerCase().trim();
+            return CITIES_DB[normalized] || null;
+        }
+
+        function calculateDistance(fromCity, toCity) {
+            const from = getCoords(fromCity);
+            const to = getCoords(toCity);
+            
+            if (!from || !to) return null;
+            
+            // Haversine gives straight-line distance
+            // Multiply by ~1.3 for approximate road distance
+            const straightLine = haversineDistance(from.lat, from.lon, to.lat, to.lon);
+            const roadDistance = Math.round(straightLine * 1.3);
+            
+            return roadDistance;
+        }
+
+        // ============================================
+        // UI FUNCTIONS
+        // ============================================
+        function init() {
+            tripDateInput.valueAsDate = new Date();
+            
+            renderPersonsList();
+            renderDestinationsList();
+            populateSelects();
+            renderTrips();
+            updateStats();
+
+            // Event listeners
+            swapBtn.addEventListener('click', toggleSwap);
+            addTripBtn.addEventListener('click', addTrip);
+            
+            personSelect.addEventListener('change', () => {
+                updateHomeSelect();
+                updateDistancePreview();
+            });
+            homeSelect.addEventListener('change', updateDistancePreview);
+            destinationSelect.addEventListener('change', updateDistancePreview);
+            $('multiplierCheck').addEventListener('change', updateDistancePreview);
+
+            // Tab switching
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    tab.classList.add('active');
+                    $(`${tab.dataset.tab}Tab`).classList.add('active');
+                });
+            });
+
+            // Person form
+            $('addPersonBtn').addEventListener('click', () => $('addPersonForm').classList.add('active'));
+            $('cancelPersonBtn').addEventListener('click', () => {
+                $('addPersonForm').classList.remove('active');
+                $('newPersonName').value = '';
+                $('newPersonCity').value = '';
+            });
+            $('savePersonBtn').addEventListener('click', savePerson);
+
+            // Destination form
+            $('addDestBtn').addEventListener('click', () => $('addDestForm').classList.add('active'));
+            $('cancelDestBtn').addEventListener('click', () => {
+                $('addDestForm').classList.remove('active');
+                $('newDestName').value = '';
+                $('newDestCity').value = '';
+            });
+            $('saveDestBtn').addEventListener('click', saveDestination);
+
+            // Export
+            $('exportBtn').addEventListener('click', showExportModal);
+            $('closeExportBtn').addEventListener('click', () => exportModal.classList.remove('active'));
+            $('copyExportBtn').addEventListener('click', copyExport);
+            $('clearAllBtn').addEventListener('click', clearAllTrips);
+
+            // Close modal on overlay click
+            exportModal.addEventListener('click', (e) => {
+                if (e.target === exportModal) exportModal.classList.remove('active');
+            });
+        }
+
+        function toggleSwap() {
+            isReturnTrip = !isReturnTrip;
+            swapBtn.classList.toggle('active', isReturnTrip);
+            swapText.textContent = isReturnTrip ? 'Retour (heen + terug)' : 'Enkele reis';
+            updateDistancePreview();
+        }
+
+        function updateHomeSelect() {
+            const personId = personSelect.value;
+            if (!personId) {
+                homeSelect.innerHTML = '<option value="">Selecteer eerst een persoon...</option>';
+                return;
+            }
+            
+            const person = persons.find(p => p.id === parseInt(personId));
+            if (person) {
+                homeSelect.innerHTML = `<option value="${person.city}">${person.city}</option>`;
+            }
+        }
+
+        function updateDistancePreview() {
+            const homeCity = homeSelect.value;
+            const destId = destinationSelect.value;
+            const useMultiplier = $('multiplierCheck').checked;
+            
+            if (!homeCity || !destId) {
+                previewKm.textContent = '—';
+                distanceInfo.textContent = '';
+                return;
+            }
+
+            const dest = destinations.find(d => d.id === parseInt(destId));
+            if (!dest) {
+                previewKm.textContent = '—';
+                distanceInfo.textContent = '';
+                return;
+            }
+
+            let distance = calculateDistance(homeCity, dest.city);
+            
+            if (distance === null) {
+                previewKm.textContent = '?';
+                distanceInfo.textContent = 'Stad niet gevonden in database';
+                return;
+            }
+
+            if (useMultiplier) {
+                distance = Math.round(distance * 1.1);
+            }
+
+            const totalKm = isReturnTrip ? distance * 2 : distance;
+            previewKm.textContent = totalKm;
+            
+            let info = `${homeCity} → ${dest.city}`;
+            if (isReturnTrip) info += ' (heen + terug)';
+            if (useMultiplier) info += ' +10%';
+            distanceInfo.textContent = info;
+        }
+
+        function populateSelects() {
+            // Persons
+            personSelect.innerHTML = '<option value="">Selecteer persoon...</option>' +
+                persons.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+            
+            // Destinations
+            destinationSelect.innerHTML = '<option value="">Selecteer bestemming...</option>' +
+                destinations
+                    .sort((a, b) => a.name.localeCompare(b.name))
+                    .map(d => `<option value="${d.id}">${d.name} (${d.city})</option>`)
+                    .join('');
+        }
+
+        function renderPersonsList() {
+            personsList.innerHTML = persons.map(p => `
+                <div class="item">
+                    <div class="item-info">
+                        <span class="item-name">${p.name}</span>
+                        <span class="item-detail">${p.city}</span>
+                    </div>
+                    <div class="item-actions">
+                        <button class="btn btn-icon btn-sm" onclick="deletePerson(${p.id})" title="Verwijderen">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 6L6 18M6 6L18 18"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderDestinationsList() {
+            destinationsList.innerHTML = destinations
+                .sort((a, b) => a.name.localeCompare(b.name))
+                .map(d => `
+                    <div class="item">
+                        <div class="item-info">
+                            <span class="item-name">${d.name}</span>
+                            <span class="item-detail">${d.city}</span>
+                        </div>
+                        <div class="item-actions">
+                            <button class="btn btn-icon btn-sm" onclick="deleteDestination(${d.id})" title="Verwijderen">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M18 6L6 18M6 6L18 18"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+        }
+
+        function addTrip() {
+            const personId = personSelect.value;
+            const homeCity = homeSelect.value;
+            const destId = destinationSelect.value;
+            const date = tripDateInput.value;
+            const useMultiplier = $('multiplierCheck').checked;
+
+            if (!personId || !homeCity || !destId || !date) {
+                showToast('Vul alle velden in');
+                return;
+            }
+
+            const person = persons.find(p => p.id === parseInt(personId));
+            const dest = destinations.find(d => d.id === parseInt(destId));
+            let distance = calculateDistance(homeCity, dest.city);
+
+            if (distance === null) {
+                showToast('Kan afstand niet berekenen');
+                return;
+            }
+
+            if (useMultiplier) {
+                distance = Math.round(distance * 1.1);
+            }
+
+            const trip = {
+                id: Date.now(),
+                date,
+                personName: person.name,
+                from: homeCity,
+                to: `${dest.name}, ${dest.city}`,
+                toCity: dest.city,
+                km: isReturnTrip ? distance * 2 : distance,
+                isReturn: isReturnTrip,
+                hasMultiplier: useMultiplier
+            };
+
+            trips.push(trip);
+            saveTrips();
+            renderTrips();
+            updateStats();
+            showToast('Rit toegevoegd');
+        }
+
+        function deleteTrip(id) {
+            trips = trips.filter(t => t.id !== id);
+            saveTrips();
+            renderTrips();
+            updateStats();
+        }
+
+        function renderTrips() {
+            if (trips.length === 0) {
+                tripsTableBody.innerHTML = '';
+                emptyState.style.display = 'block';
+                $('tripsTable').querySelector('thead').style.display = 'none';
+                return;
+            }
+
+            emptyState.style.display = 'none';
+            $('tripsTable').querySelector('thead').style.display = '';
+
+            const sortedTrips = [...trips].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            tripsTableBody.innerHTML = sortedTrips.map(trip => {
+                const initials = trip.personName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+                const formattedDate = new Date(trip.date).toLocaleDateString('nl-NL', { 
+                    day: '2-digit', 
+                    month: 'short',
+                    year: 'numeric'
+                });
+
+                return `
+                    <tr>
+                        <td class="date-cell">${formattedDate}</td>
+                        <td>
+                            <div class="person-cell">
+                                <div class="person-avatar">${initials}</div>
+                                <span>${trip.personName}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="route-cell">
+                                <span>${trip.from}</span>
+                                <span class="route-arrow">→</span>
+                                <span>${trip.to}</span>
+                                ${trip.isReturn ? '<span class="return-badge">retour</span>' : ''}
+                                ${trip.hasMultiplier ? '<span class="return-badge" style="background: rgba(74, 222, 128, 0.2); color: var(--success);">+10%</span>' : ''}
+                            </div>
+                        </td>
+                        <td class="km-cell">${trip.km} km</td>
+                        <td>
+                            <div class="actions-cell">
+                                <button class="btn btn-icon btn-sm" onclick="deleteTrip(${trip.id})" title="Verwijderen">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M18 6L6 18M6 6L18 18"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function updateStats() {
+            const totalKm = trips.reduce((sum, t) => sum + t.km, 0);
+            totalKmEl.textContent = totalKm.toLocaleString('nl-NL');
+            totalTripsEl.textContent = trips.length;
+        }
+
+        function savePerson() {
+            const name = $('newPersonName').value.trim();
+            const city = $('newPersonCity').value.trim();
+
+            if (!name || !city) {
+                showToast('Vul naam en woonplaats in');
+                return;
+            }
+
+            if (!getCoords(city)) {
+                showToast(`Stad "${city}" niet gevonden in database`);
+                return;
+            }
+
+            persons.push({
+                id: Date.now(),
+                name,
+                city
+            });
+
+            localStorage.setItem('kmreg_persons', JSON.stringify(persons));
+            renderPersonsList();
+            populateSelects();
+            
+            $('addPersonForm').classList.remove('active');
+            $('newPersonName').value = '';
+            $('newPersonCity').value = '';
+            showToast('Persoon toegevoegd');
+        }
+
+        function deletePerson(id) {
+            if (!confirm('Weet je zeker dat je deze persoon wilt verwijderen?')) return;
+            persons = persons.filter(p => p.id !== id);
+            localStorage.setItem('kmreg_persons', JSON.stringify(persons));
+            renderPersonsList();
+            populateSelects();
+        }
+
+        function saveDestination() {
+            const name = $('newDestName').value.trim();
+            const city = $('newDestCity').value.trim();
+
+            if (!name || !city) {
+                showToast('Vul naam en stad in');
+                return;
+            }
+
+            if (!getCoords(city)) {
+                showToast(`Stad "${city}" niet gevonden in database`);
+                return;
+            }
+
+            destinations.push({
+                id: Date.now(),
+                name,
+                city
+            });
+
+            localStorage.setItem('kmreg_destinations', JSON.stringify(destinations));
+            renderDestinationsList();
+            populateSelects();
+            
+            $('addDestForm').classList.remove('active');
+            $('newDestName').value = '';
+            $('newDestCity').value = '';
+            showToast('Bestemming toegevoegd');
+        }
+
+        function deleteDestination(id) {
+            if (!confirm('Weet je zeker dat je deze bestemming wilt verwijderen?')) return;
+            destinations = destinations.filter(d => d.id !== id);
+            localStorage.setItem('kmreg_destinations', JSON.stringify(destinations));
+            renderDestinationsList();
+            populateSelects();
+        }
+
+        function showExportModal() {
+            if (trips.length === 0) {
+                showToast('Geen ritten om te exporteren');
+                return;
+            }
+
+            // Group by person
+            const byPerson = {};
+            trips.forEach(trip => {
+                if (!byPerson[trip.personName]) {
+                    byPerson[trip.personName] = [];
+                }
+                byPerson[trip.personName].push(trip);
+            });
+
+            let exportText = 'KILOMETERREGISTRATIE\n';
+            exportText += '═'.repeat(50) + '\n\n';
+
+            for (const [person, personTrips] of Object.entries(byPerson)) {
+                const totalKm = personTrips.reduce((sum, t) => sum + t.km, 0);
+                exportText += `${person.toUpperCase()}\n`;
+                exportText += '─'.repeat(40) + '\n';
+
+                personTrips.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+                personTrips.forEach(trip => {
+                    const date = new Date(trip.date).toLocaleDateString('nl-NL');
+                    const retour = trip.isReturn ? ' (retour)' : '';
+                    exportText += `${date.padEnd(12)} ${trip.from} → ${trip.toCity}${retour}\n`;
+                    exportText += `${''.padEnd(12)} ${trip.km} km\n`;
+                });
+
+                exportText += `\nSubtotaal ${person}: ${totalKm} km\n\n`;
+            }
+
+            const grandTotal = trips.reduce((sum, t) => sum + t.km, 0);
+            exportText += '═'.repeat(50) + '\n';
+            exportText += `TOTAAL: ${grandTotal} km\n`;
+
+            exportPreview.textContent = exportText;
+            exportModal.classList.add('active');
+        }
+
+        function copyExport() {
+            navigator.clipboard.writeText(exportPreview.textContent).then(() => {
+                showToast('Gekopieerd naar klembord!');
+            });
+        }
+
+        function clearAllTrips() {
+            if (!confirm('Weet je zeker dat je ALLE ritten wilt wissen?')) return;
+            trips = [];
+            saveTrips();
+            renderTrips();
+            updateStats();
+            showToast('Alle ritten gewist');
+        }
+
+        function saveTrips() {
+            localStorage.setItem('kmreg_trips', JSON.stringify(trips));
+        }
+
+        function showToast(message) {
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // Make functions globally available for onclick handlers
+        window.deletePerson = deletePerson;
+        window.deleteDestination = deleteDestination;
+        window.deleteTrip = deleteTrip;
+
+        // Start app
+        init();
+    </script>
+</body>
+</html>
